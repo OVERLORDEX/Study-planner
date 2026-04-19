@@ -1,0 +1,75 @@
+<div class="register-page">
+  <div class="register-card">
+    <div class="brand-block">
+      <div class="brand-content">
+        <div class="brand-badge">Student marketplace</div>
+        <h1>UniTrade</h1>
+        <p>
+          Create your account and start buying or selling inside the student community.
+        </p>
+      </div>
+    </div>
+
+    <div class="form-block">
+      <h2>Create account</h2>
+      <p class="subtitle">Join UniTrade in a few steps</p>
+
+      <div class="input-group">
+        <input
+          type="text"
+          placeholder="Username"
+          [(ngModel)]="username"
+          (blur)="validateUsername()"
+        />
+        @if (usernameError) {
+          <p class="field-error">{{ usernameError }}</p>
+        }
+      </div>
+
+      <div class="input-group">
+        <input
+          type="email"
+          placeholder="Email"
+          [(ngModel)]="email"
+          (blur)="validateEmail()"
+        />
+        @if (emailError) {
+          <p class="field-error">{{ emailError }}</p>
+        }
+      </div>
+
+      <div class="input-group">
+        <input
+          type="password"
+          placeholder="Password"
+          [(ngModel)]="password"
+          (blur)="validatePassword()"
+        />
+        @if (passwordError) {
+          <p class="field-error">{{ passwordError }}</p>
+        }
+      </div>
+
+      <button class="register-btn" (click)="onRegister()" [disabled]="isLoading">
+        @if (!isLoading) {
+          Register
+        } @else {
+          Creating...
+        }
+      </button>
+
+      @if (errorMessage) {
+        <p class="server-error">{{ errorMessage }}</p>
+      }
+
+      <div class="divider">
+        <span>or</span>
+      </div>
+
+      <p class="login-link">
+        Already have an account?
+        <a routerLink="/login">Login</a>
+      </p>
+    </div>
+  </div>
+</div>

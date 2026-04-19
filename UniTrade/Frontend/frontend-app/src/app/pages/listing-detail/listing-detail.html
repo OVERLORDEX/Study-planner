@@ -1,0 +1,83 @@
+<div class="detail-page">
+  <div class="detail-container">
+    @if (isLoading) {
+      <div class="message-box loading-box">Loading listing...</div>
+    }
+
+    @if (errorMessage && !listing) {
+      <div class="message-box error-box">{{ errorMessage }}</div>
+    }
+
+    @if (!isLoading && listing) {
+      <div class="detail-card">
+        <div class="detail-image-block">
+          <img [src]="getImageUrl(listing)" [alt]="listing.title" />
+        </div>
+
+        <div class="detail-info-block">
+          <div class="detail-badge">{{ listing.status }}</div>
+          <h1>{{ listing.title }}</h1>
+          <p class="detail-price">{{ listing.price }} ₸</p>
+
+          <div class="info-grid">
+            <div class="info-item">
+              <span>Category</span>
+              <strong>{{ listing.category.name }}</strong>
+            </div>
+
+            <div class="info-item">
+              <span>Condition</span>
+              <strong>{{ listing.condition }}</strong>
+            </div>
+
+            <div class="info-item">
+              <span>Location</span>
+              <strong>{{ listing.location || 'Not specified' }}</strong>
+            </div>
+
+            <div class="info-item">
+              <span>Views</span>
+              <strong>{{ listing.views_count }}</strong>
+            </div>
+          </div>
+
+          <div class="description-box">
+            <h3>Description</h3>
+            <p>{{ listing.description }}</p>
+          </div>
+
+          <div class="detail-actions">
+            <button class="favorite-btn" (click)="addToFavorites()">Add to Favorites</button>
+            <a routerLink="/listings" class="back-btn">Back to Listings</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="comments-card">
+        <h2>Comments</h2>
+
+        <div class="comment-form">
+          <textarea
+            rows="4"
+            placeholder="Write a comment..."
+            [(ngModel)]="commentText"
+          ></textarea>
+          <button (click)="addComment()">Post Comment</button>
+        </div>
+
+        @if (comments.length === 0) {
+          <p class="no-comments">No comments yet.</p>
+        }
+
+        <div class="comments-list">
+          @for (comment of comments; track comment.id) {
+            <div class="comment-item">
+              <p class="comment-user">{{ comment.user.username }}</p>
+              <p class="comment-text">{{ comment.text }}</p>
+            </div>
+          }
+        </div>
+      </div>
+    }
+  </div>
+</div>

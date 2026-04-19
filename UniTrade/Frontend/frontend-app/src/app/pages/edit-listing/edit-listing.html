@@ -1,0 +1,132 @@
+<div class="edit-page">
+  <div class="edit-card">
+    <div class="intro-block">
+      <div class="intro-content">
+        <div class="intro-badge">Manage your marketplace post</div>
+        <h1>Edit Listing</h1>
+        <p>
+          Update your item information and keep your UniTrade post fresh and accurate.
+        </p>
+      </div>
+    </div>
+
+    <div class="form-block">
+      @if (isPageLoading) {
+        <div class="message-box loading-box">Loading listing...</div>
+      } @else {
+        <h2>Edit details</h2>
+        <p class="subtitle">Update the item information below</p>
+
+        <div class="form-grid">
+          <div class="input-group full">
+            <input
+              type="text"
+              placeholder="Title"
+              [(ngModel)]="title"
+              (blur)="validateTitle()"
+            />
+            @if (titleError) {
+              <p class="field-error">{{ titleError }}</p>
+            }
+          </div>
+
+          <div class="input-group full">
+            <textarea
+              rows="5"
+              placeholder="Description"
+              [(ngModel)]="description"
+              (blur)="validateDescription()"
+            ></textarea>
+            @if (descriptionError) {
+              <p class="field-error">{{ descriptionError }}</p>
+            }
+          </div>
+
+          <div class="input-group">
+            <input
+              type="number"
+              placeholder="Price"
+              [(ngModel)]="price"
+              (blur)="validatePrice()"
+            />
+            @if (priceError) {
+              <p class="field-error">{{ priceError }}</p>
+            }
+          </div>
+
+          <div class="input-group">
+            <input
+              type="text"
+              placeholder="Location (Dormitory / Campus)"
+              [(ngModel)]="location"
+            />
+          </div>
+
+          <div class="input-group full">
+            <label class="upload-label">Change photo</label>
+            <input
+              type="file"
+              accept="image/*"
+              capture="environment"
+              (change)="onImageSelected($event)"
+            />
+
+            @if (imagePreview) {
+              <div class="preview-box">
+                <img [src]="imagePreview" alt="New preview" />
+              </div>
+            } @else if (currentImageUrl) {
+              <div class="preview-box">
+                <img [src]="currentImageUrl" alt="Current image" />
+              </div>
+            }
+          </div>
+
+          <div class="input-group">
+            <select [(ngModel)]="condition">
+              <option value="new">New</option>
+              <option value="used">Used</option>
+            </select>
+          </div>
+
+          <div class="input-group">
+            <select [(ngModel)]="status">
+              <option value="available">Available</option>
+              <option value="reserved">Reserved</option>
+              <option value="sold">Sold</option>
+            </select>
+          </div>
+
+          <div class="input-group full">
+            <select [(ngModel)]="category_id" (blur)="validateCategory()">
+              <option [ngValue]="null">Select category</option>
+              @for (category of categories; track category.id) {
+                <option [ngValue]="category.id">{{ category.name }}</option>
+              }
+            </select>
+            @if (categoryError) {
+              <p class="field-error">{{ categoryError }}</p>
+            }
+          </div>
+        </div>
+
+        <button class="edit-btn" (click)="onUpdate()" [disabled]="isLoading">
+          @if (!isLoading) {
+            Save Changes
+          } @else {
+            Saving...
+          }
+        </button>
+
+        @if (errorMessage) {
+          <p class="server-error">{{ errorMessage }}</p>
+        }
+
+        <p class="back-link">
+          Want to return?
+          <a routerLink="/my-listings">Back to My Listings</a>
+        </p>
+      }
+    </div>
+  </div>
+</div>

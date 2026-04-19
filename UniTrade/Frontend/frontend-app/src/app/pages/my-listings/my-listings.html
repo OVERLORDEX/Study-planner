@@ -1,0 +1,51 @@
+<div class="my-listings-page">
+  <div class="page-header">
+    <div class="page-header-card">
+      <div class="header-badge">Your marketplace posts</div>
+      <h1>My Listings</h1>
+      <p>Manage, edit, and remove the items you published on UniTrade.</p>
+    </div>
+  </div>
+
+  <div class="page-container">
+    @if (errorMessage) {
+      <div class="message-box error-box">{{ errorMessage }}</div>
+    }
+
+    @if (isLoading) {
+      <div class="message-box loading-box">Loading your listings...</div>
+    }
+
+    @if (!isLoading && listings.length === 0) {
+      <div class="empty-state">
+        <h3>You have no listings yet</h3>
+        <p>Create your first item and start sharing it with other students.</p>
+        <a routerLink="/create-listing" class="empty-btn">Create Listing</a>
+      </div>
+    }
+
+    @if (!isLoading && listings.length > 0) {
+      <div class="my-grid">
+        @for (listing of listings; track listing.id) {
+          <div class="my-card">
+            <div class="image-wrapper">
+              <img [src]="getImageUrl(listing)" [alt]="listing.title" />
+              <span class="status-badge">{{ listing.status }}</span>
+            </div>
+
+            <div class="card-body">
+              <h3>{{ listing.title }}</h3>
+              <p class="price">{{ listing.price }} ₸</p>
+              <p class="category">{{ listing.category.name }}</p>
+
+              <div class="card-actions">
+                <a [routerLink]="['/edit-listing', listing.id]" class="edit-btn">Edit</a>
+                <button class="delete-btn" (click)="deleteListing(listing.id)">Delete</button>
+              </div>
+            </div>
+          </div>
+        }
+      </div>
+    }
+  </div>
+</div>

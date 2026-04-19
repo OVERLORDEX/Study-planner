@@ -1,0 +1,124 @@
+<div class="create-page">
+  <div class="create-card">
+    <div class="intro-block">
+      <div class="intro-content">
+        <div class="intro-badge">New marketplace post</div>
+        <h1>Create Listing</h1>
+        <p>
+          Add your item to UniTrade and let other students discover it quickly.
+        </p>
+      </div>
+    </div>
+
+    <div class="form-block">
+      <h2>Listing details</h2>
+      <p class="subtitle">Fill in the item information below</p>
+
+      <div class="form-grid">
+        <div class="input-group full">
+          <input
+            type="text"
+            placeholder="Title"
+            [(ngModel)]="title"
+            (blur)="validateTitle()"
+          />
+          @if (titleError) {
+            <p class="field-error">{{ titleError }}</p>
+          }
+        </div>
+
+        <div class="input-group full">
+          <textarea
+            rows="5"
+            placeholder="Description"
+            [(ngModel)]="description"
+            (blur)="validateDescription()"
+          ></textarea>
+          @if (descriptionError) {
+            <p class="field-error">{{ descriptionError }}</p>
+          }
+        </div>
+
+        <div class="input-group">
+          <input
+            type="number"
+            placeholder="Price"
+            [(ngModel)]="price"
+            (blur)="validatePrice()"
+          />
+          @if (priceError) {
+            <p class="field-error">{{ priceError }}</p>
+          }
+        </div>
+
+        <div class="input-group">
+          <input
+            type="text"
+            placeholder="Location (Dormitory / Campus)"
+            [(ngModel)]="location"
+          />
+        </div>
+
+        <div class="input-group full">
+          <label class="upload-label">Upload photo</label>
+          <input
+            type="file"
+            accept="image/*"
+            capture="environment"
+            (change)="onImageSelected($event)"
+          />
+
+          @if (imagePreview) {
+            <div class="preview-box">
+              <img [src]="imagePreview" alt="Preview" />
+            </div>
+          }
+        </div>
+
+        <div class="input-group">
+          <select [(ngModel)]="condition">
+            <option value="new">New</option>
+            <option value="used">Used</option>
+          </select>
+        </div>
+
+        <div class="input-group">
+          <select [(ngModel)]="status">
+            <option value="available">Available</option>
+            <option value="reserved">Reserved</option>
+            <option value="sold">Sold</option>
+          </select>
+        </div>
+
+        <div class="input-group full">
+          <select [(ngModel)]="category_id" (blur)="validateCategory()">
+            <option [ngValue]="null">Select category</option>
+            @for (category of categories; track category.id) {
+              <option [ngValue]="category.id">{{ category.name }}</option>
+            }
+          </select>
+          @if (categoryError) {
+            <p class="field-error">{{ categoryError }}</p>
+          }
+        </div>
+      </div>
+
+      <button class="create-btn" (click)="onCreate()" [disabled]="isLoading">
+        @if (!isLoading) {
+          Publish listing
+        } @else {
+          Publishing...
+        }
+      </button>
+
+      @if (errorMessage) {
+        <p class="server-error">{{ errorMessage }}</p>
+      }
+
+      <p class="back-link">
+        Want to go back?
+        <a routerLink="/listings">Browse listings</a>
+      </p>
+    </div>
+  </div>
+</div>
