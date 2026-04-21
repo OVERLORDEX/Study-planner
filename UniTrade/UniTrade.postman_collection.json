@@ -1,0 +1,1358 @@
+{
+  "info": {
+    "_postman_id": "2d9b6bb9-b2b8-4560-a009-8270948ee273",
+    "name": "UniTrade",
+    "description": "Postman collection for Angular + Django project — KBTU 2026",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "53653754",
+    "_collection_link": "https://go.postman.co/collection/53653754-2d9b6bb9-b2b8-4560-a009-8270948ee273?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "Auth",
+      "item": [
+        {
+          "name": "Register",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"username\": \"testuser\",\n  \"password\": \"testpass123\",\n  \"email\": \"test@example.com\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/register/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "register",
+                ""
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "201 Created",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"username\": \"testuser\",\n  \"password\": \"testpass123\",\n  \"email\": \"test@example.com\"\n}"
+                },
+                "url": {
+                  "raw": "{{base_url}}/register/",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "register",
+                    ""
+                  ]
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "_postman_previewlanguage": "Text",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"id\": 1,\n  \"username\": \"testuser\",\n  \"email\": \"test@example.com\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "Login",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "var json = pm.response.json();",
+                  "pm.collectionVariables.set('token', json.token);"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"username\": \"testuser\",\n  \"password\": \"testpass123\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/login/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "login",
+                ""
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "200 OK",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"username\": \"testuser\",\n  \"password\": \"testpass123\"\n}"
+                },
+                "url": {
+                  "raw": "{{base_url}}/login/",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "login",
+                    ""
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "Text",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"token\": \"abc123def456...\"\n}"
+            },
+            {
+              "name": "400 Bad Credentials",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"username\": \"testuser\",\n  \"password\": \"testpass123\"\n}"
+                },
+                "url": {
+                  "raw": "{{base_url}}/login/",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "login",
+                    ""
+                  ]
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": "Text",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"error\": \"Invalid credentials\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "Logout",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Token {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/logout/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "logout",
+                ""
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "200 OK",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Token {{token}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/logout/",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "logout",
+                    ""
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "Text",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"message\": \"Successfully logged out.\"\n}"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Categories",
+      "item": [
+        {
+          "name": "List Categories",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Token {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/categories/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "categories",
+                ""
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "200 OK",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Token {{token}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/categories/",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "categories",
+                    ""
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "Text",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "[\n  { \"id\": 1, \"name\": \"Electronics\" },\n  { \"id\": 2, \"name\": \"Clothing\" },\n  { \"id\": 3, \"name\": \"Furniture\" }\n]"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Listings",
+      "item": [
+        {
+          "name": "List All Listings",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Token {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/listings/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "listings",
+                ""
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "200 OK",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Token {{token}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/listings/",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "listings",
+                    ""
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "Text",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "[\n  {\n    \"id\": 1,\n    \"title\": \"iPhone 14\",\n    \"description\": \"Good condition\",\n    \"price\": \"150000.00\",\n    \"category\": 1,\n    \"owner\": \"testuser\",\n    \"created_at\": \"2026-01-15T10:00:00Z\"\n  }\n]"
+            }
+          ]
+        },
+        {
+          "name": "Create Listing",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Token {{token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"iPhone 14\",\n  \"description\": \"Good condition, minimal scratches\",\n  \"price\": \"150000.00\",\n  \"category\": 1\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/listings/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "listings",
+                ""
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "201 Created",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Token {{token}}"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"title\": \"iPhone 14\",\n  \"description\": \"Good condition, minimal scratches\",\n  \"price\": \"150000.00\",\n  \"category\": 1\n}"
+                },
+                "url": {
+                  "raw": "{{base_url}}/listings/",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "listings",
+                    ""
+                  ]
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "_postman_previewlanguage": "Text",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"id\": 2,\n  \"title\": \"iPhone 14\",\n  \"description\": \"Good condition, minimal scratches\",\n  \"price\": \"150000.00\",\n  \"category\": 1,\n  \"owner\": \"testuser\",\n  \"created_at\": \"2026-04-21T10:00:00Z\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "Get Listing by ID",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Token {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/listings/1/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "listings",
+                "1",
+                ""
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "200 OK",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Token {{token}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/listings/1/",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "listings",
+                    "1",
+                    ""
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "Text",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"id\": 1,\n  \"title\": \"iPhone 14\",\n  \"description\": \"Good condition\",\n  \"price\": \"150000.00\",\n  \"category\": 1,\n  \"owner\": \"testuser\",\n  \"created_at\": \"2026-01-15T10:00:00Z\"\n}"
+            },
+            {
+              "name": "404 Not Found",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Token {{token}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/listings/1/",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "listings",
+                    "1",
+                    ""
+                  ]
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "_postman_previewlanguage": "Text",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"detail\": \"Not found.\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "Update Listing",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Token {{token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"iPhone 14 Pro\",\n  \"description\": \"Updated description\",\n  \"price\": \"180000.00\",\n  \"category\": 1\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/listings/1/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "listings",
+                "1",
+                ""
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "200 OK",
+              "originalRequest": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Token {{token}}"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"title\": \"iPhone 14 Pro\",\n  \"description\": \"Updated description\",\n  \"price\": \"180000.00\",\n  \"category\": 1\n}"
+                },
+                "url": {
+                  "raw": "{{base_url}}/listings/1/",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "listings",
+                    "1",
+                    ""
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "Text",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"id\": 1,\n  \"title\": \"iPhone 14 Pro\",\n  \"description\": \"Updated description\",\n  \"price\": \"180000.00\",\n  \"category\": 1,\n  \"owner\": \"testuser\",\n  \"created_at\": \"2026-01-15T10:00:00Z\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "Partial Update Listing",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Token {{token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"price\": \"140000.00\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/listings/1/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "listings",
+                "1",
+                ""
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "200 OK",
+              "originalRequest": {
+                "method": "PATCH",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Token {{token}}"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"price\": \"140000.00\"\n}"
+                },
+                "url": {
+                  "raw": "{{base_url}}/listings/1/",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "listings",
+                    "1",
+                    ""
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "Text",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"id\": 1,\n  \"title\": \"iPhone 14\",\n  \"price\": \"140000.00\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "Delete Listing",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Token {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/listings/1/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "listings",
+                "1",
+                ""
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "204 No Content",
+              "originalRequest": {
+                "method": "DELETE",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Token {{token}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/listings/1/",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "listings",
+                    "1",
+                    ""
+                  ]
+                }
+              },
+              "status": "No Content",
+              "code": 204,
+              "_postman_previewlanguage": "Text",
+              "header": [],
+              "cookie": [],
+              "body": ""
+            },
+            {
+              "name": "403 Forbidden",
+              "originalRequest": {
+                "method": "DELETE",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Token {{token}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/listings/1/",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "listings",
+                    "1",
+                    ""
+                  ]
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "_postman_previewlanguage": "Text",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"detail\": \"You do not have permission to perform this action.\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "My Listings",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Token {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/my-listings/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "my-listings",
+                ""
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "200 OK",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Token {{token}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/my-listings/",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "my-listings",
+                    ""
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "Text",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "[\n  {\n    \"id\": 1,\n    \"title\": \"iPhone 14\",\n    \"price\": \"150000.00\",\n    \"category\": 1\n  }\n]"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Profile",
+      "item": [
+        {
+          "name": "Get My Profile",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Token {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/profile/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "profile",
+                ""
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "200 OK",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Token {{token}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/profile/",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "profile",
+                    ""
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "Text",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"id\": 1,\n  \"username\": \"testuser\",\n  \"email\": \"test@example.com\",\n  \"bio\": \"Hello!\",\n  \"phone\": \"+7 700 123 4567\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "Update My Profile",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Token {{token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"bio\": \"Updated bio\",\n  \"phone\": \"+7 700 999 0000\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/profile/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "profile",
+                ""
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "200 OK",
+              "originalRequest": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Token {{token}}"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"bio\": \"Updated bio\",\n  \"phone\": \"+7 700 999 0000\"\n}"
+                },
+                "url": {
+                  "raw": "{{base_url}}/profile/",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "profile",
+                    ""
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "Text",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"id\": 1,\n  \"username\": \"testuser\",\n  \"email\": \"test@example.com\",\n  \"bio\": \"Updated bio\",\n  \"phone\": \"+7 700 999 0000\"\n}"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Favorites",
+      "item": [
+        {
+          "name": "List Favorites",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Token {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/favorites/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "favorites",
+                ""
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "200 OK",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Token {{token}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/favorites/",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "favorites",
+                    ""
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "Text",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "[\n  {\n    \"id\": 1,\n    \"listing\": {\n      \"id\": 1,\n      \"title\": \"iPhone 14\",\n      \"price\": \"150000.00\"\n    }\n  }\n]"
+            }
+          ]
+        },
+        {
+          "name": "Add to Favorites",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Token {{token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"listing\": 1\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/favorites/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "favorites",
+                ""
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "201 Created",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Token {{token}}"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"listing\": 1\n}"
+                },
+                "url": {
+                  "raw": "{{base_url}}/favorites/",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "favorites",
+                    ""
+                  ]
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "_postman_previewlanguage": "Text",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"id\": 1,\n  \"listing\": 1,\n  \"user\": \"testuser\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "Remove from Favorites",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Token {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/favorites/1/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "favorites",
+                "1",
+                ""
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "204 No Content",
+              "originalRequest": {
+                "method": "DELETE",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Token {{token}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/favorites/1/",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "favorites",
+                    "1",
+                    ""
+                  ]
+                }
+              },
+              "status": "No Content",
+              "code": 204,
+              "_postman_previewlanguage": "Text",
+              "header": [],
+              "cookie": [],
+              "body": ""
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Comments",
+      "item": [
+        {
+          "name": "List Comments for Listing",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Token {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/listings/1/comments/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "listings",
+                "1",
+                "comments",
+                ""
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "200 OK",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Token {{token}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/listings/1/comments/",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "listings",
+                    "1",
+                    "comments",
+                    ""
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "Text",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "[\n  {\n    \"id\": 1,\n    \"text\": \"Great product!\",\n    \"author\": \"testuser\",\n    \"created_at\": \"2026-04-20T09:00:00Z\"\n  }\n]"
+            }
+          ]
+        },
+        {
+          "name": "Create Comment for Listing",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Token {{token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"text\": \"Is this still available?\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/listings/1/comments/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "listings",
+                "1",
+                "comments",
+                ""
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "201 Created",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Token {{token}}"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"text\": \"Is this still available?\"\n}"
+                },
+                "url": {
+                  "raw": "{{base_url}}/listings/1/comments/",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "listings",
+                    "1",
+                    "comments",
+                    ""
+                  ]
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "_postman_previewlanguage": "Text",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"id\": 2,\n  \"text\": \"Is this still available?\",\n  \"author\": \"testuser\",\n  \"listing\": 1,\n  \"created_at\": \"2026-04-21T10:30:00Z\"\n}"
+            },
+            {
+              "name": "401 Unauthorized",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Token {{token}}"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"text\": \"Is this still available?\"\n}"
+                },
+                "url": {
+                  "raw": "{{base_url}}/listings/1/comments/",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "listings",
+                    "1",
+                    "comments",
+                    ""
+                  ]
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "_postman_previewlanguage": "Text",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"detail\": \"Authentication credentials were not provided.\"\n}"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://localhost:8000/api"
+    },
+    {
+      "key": "token",
+      "value": ""
+    }
+  ]
+}
