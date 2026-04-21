@@ -25,7 +25,6 @@ class RegisterSerializer(serializers.Serializer):
         )
         return user
 
-
 class LoginSerializer(serializers.Serializer):
     username = serializers.CharField()
     password = serializers.CharField(write_only=True)
@@ -54,12 +53,18 @@ class ProfileSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Profile
-        fields = ['id', 'user', 'phone', 'dormitory', 'room', 'avatar_url', 'telegram', 'whatsapp', 'contact_email', 'first_name', 'last_name', 'birth_year', 'avatar',]
-
-class SellerProfileSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Profile
-        fields = ['phone', 'telegram', 'whatsapp', 'contact_email', 'dormitory', 'room']
+        fields = [
+            'id',
+            'user',
+            'phone',
+            'dormitory',
+            'room',
+            'avatar_url',
+            'avatar',
+            'bio',
+            'telegram_username',
+            'university_id',
+        ]
 
 
 class CategorySerializer(serializers.ModelSerializer):
@@ -82,6 +87,8 @@ class ListingSerializer(serializers.ModelSerializer):
     category_id = serializers.IntegerField(write_only=True)
     comments = CommentSerializer(many=True, read_only=True)
     favorites_count = serializers.SerializerMethodField()
+    seller_contacts = serializers.SerializerMethodField()
+    is_favorited = serializers.SerializerMethodField()
     image = serializers.ImageField(required=False, allow_null=True)
     seller_profile = serializers.SerializerMethodField()
     average_rating = serializers.SerializerMethodField()
@@ -108,10 +115,19 @@ class ListingSerializer(serializers.ModelSerializer):
             'comments',
             'favorites_count',
             'seller_profile',
+            'seller_contacts',
+            'is_favorited',
             'average_rating',
             'ratings_count',
         ]
-        read_only_fields = ['seller', 'views_count', 'created_at', 'updated_at']
+        read_only_fields = [
+            'seller',
+            'views_count',
+            'created_at',
+            'updated_at',
+            'seller_contacts',
+            'is_favorited',
+        ]
 
     def get_favorites_count(self, obj):
         return obj.favorites.count()
@@ -121,12 +137,12 @@ class ListingSerializer(serializers.ModelSerializer):
         if profile:
             return {
                 'phone': profile.phone,
-                'telegram': getattr(profile, 'telegram', ''),
-                'whatsapp': getattr(profile, 'whatsapp', ''),
-                'contact_email': getattr(profile, 'contact_email', ''),
                 'dormitory': profile.dormitory,
                 'room': profile.room,
-        }
+                'bio': profile.bio,
+                'telegram_username': profile.telegram_username,
+                'university_id': profile.university_id,
+            }
         return None
     
     def get_average_rating(self, obj):
@@ -137,6 +153,33 @@ class ListingSerializer(serializers.ModelSerializer):
 
     def get_ratings_count(self, obj):
         return obj.ratings.count()
+
+    def get_seller_contacts(self, obj):
+        profile = getattr(obj.seller, 'profile', None)
+        if not profile:
+            return None
+        
+        phone = profile.phone
+        whatsapp_link = ""
+        if phone:
+            import urllib.parse
+            encoded_title = urllib.parse.quote(f"Привет, я по поводу объявления {obj.title}")
+            clean_phone = ''.join(filter(str.isdigit, phone))
+            whatsapp_link = f"https://wa.me/{clean_phone}?text={encoded_title}"
+
+        return {
+            'phone': phone,
+            'whatsapp_link': whatsapp_link,
+            'telegram_username': profile.telegram_username,
+            'email': obj.seller.email,
+        }
+
+    def get_is_favorited(self, obj):
+        request = self.context.get('request')
+        if request and request.user.is_authenticated:
+            from .models import Favorite
+            return Favorite.objects.filter(listing=obj, user=request.user).exists()
+        return False
 
     def create(self, validated_data):
         category_id = validated_data.pop('category_id')

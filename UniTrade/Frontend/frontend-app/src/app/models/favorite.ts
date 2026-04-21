@@ -5,6 +5,5 @@ export interface Favorite {
   id: number;
   user: User;
   listing: Listing;
-  listing_id?: number;
-  created_at: string;
+  created_at?: string;
 }

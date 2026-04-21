@@ -2,37 +2,25 @@
   <div class="login-card">
     <div class="brand-block">
       <div class="brand-content">
-        <div class="brand-badge">Student marketplace</div>
+        <div class="brand-badge">{{ langService.t('studentMarketplace') }}</div>
         <h1>UniTrade</h1>
-        <p>
-          Sign in to browse listings, save favorites, and manage your campus marketplace account.
-        </p>
+        <p>{{ langService.t('loginIntro') }}</p>
       </div>
     </div>
 
     <div class="form-block">
-      <h2>Login</h2>
-      <p class="subtitle">Welcome back to UniTrade</p>
+      <h2>{{ langService.t('login') }}</h2>
+      <p class="subtitle">{{ langService.t('welcomeBack') }}</p>
 
       <div class="input-group">
-        <input
-          type="text"
-          placeholder="Username"
-          [(ngModel)]="username"
-          (blur)="validateUsername()"
-        />
+        <input type="text" [placeholder]="langService.t('username')" [(ngModel)]="username" (blur)="validateUsername()" />
         @if (usernameError) {
           <p class="field-error">{{ usernameError }}</p>
         }
       </div>
 
       <div class="input-group">
-        <input
-          type="password"
-          placeholder="Password"
-          [(ngModel)]="password"
-          (blur)="validatePassword()"
-        />
+        <input type="password" [placeholder]="langService.t('password')" [(ngModel)]="password" (blur)="validatePassword()" />
         @if (passwordError) {
           <p class="field-error">{{ passwordError }}</p>
         }
@@ -40,9 +28,9 @@
 
       <button class="login-btn" (click)="onLogin()" [disabled]="isLoading">
         @if (!isLoading) {
-          Login
+          {{ langService.t('login') }}
         } @else {
-          Signing in...
+          {{ langService.t('signingIn') }}
         }
       </button>
 
@@ -51,12 +39,12 @@
       }
 
       <div class="divider">
-        <span>or</span>
+        <span>{{ langService.t('or') }}</span>
       </div>
 
       <p class="register-link">
-        Don’t have an account?
-        <a routerLink="/register">Register</a>
+        {{ langService.t('dontHaveAccount') }}
+        <a routerLink="/register">{{ langService.t('register') }}</a>
       </p>
     </div>
   </div>

@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '../../services/auth';
+import { LanguageService } from '../../services/language';
 
 @Component({
   selector: 'app-login',
@@ -21,22 +22,19 @@ export class LoginComponent {
 
   constructor(
     private authService: AuthService,
-    private router: Router
+    private router: Router,
+    public langService: LanguageService
   ) {}
 
   validateUsername(): void {
-    if (!this.username.trim()) {
-      this.usernameError = 'Username is required';
-    } else {
-      this.usernameError = '';
-    }
+    this.usernameError = !this.username.trim() ? this.langService.t('usernameRequired') : '';
   }
 
   validatePassword(): void {
     if (!this.password.trim()) {
-      this.passwordError = 'Password is required';
+      this.passwordError = this.langService.t('passwordRequired');
     } else if (this.password.length < 8) {
-      this.passwordError = 'Password must be at least 8 characters';
+      this.passwordError = this.langService.t('passwordMinLength');
     } else {
       this.passwordError = '';
     }
@@ -45,16 +43,12 @@ export class LoginComponent {
   validateForm(): boolean {
     this.validateUsername();
     this.validatePassword();
-
     return !this.usernameError && !this.passwordError;
   }
 
   onLogin(): void {
     this.errorMessage = '';
-
-    if (!this.validateForm()) {
-      return;
-    }
+    if (!this.validateForm()) return;
 
     this.isLoading = true;
 
@@ -69,13 +63,12 @@ export class LoginComponent {
       },
       error: (error) => {
         this.isLoading = false;
-
         if (error.error?.non_field_errors) {
           this.errorMessage = error.error.non_field_errors[0];
         } else if (error.error?.detail) {
           this.errorMessage = error.error.detail;
         } else {
-          this.errorMessage = 'Invalid username or password';
+          this.errorMessage = this.langService.t('invalidUsernameOrPassword');
         }
       }
     });

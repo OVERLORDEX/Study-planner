@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { ListingService } from '../../services/listing';
 import { Category } from '../../models/category';
+import { LanguageService } from '../../services/language';
 
 @Component({
   selector: 'app-edit-listing',
@@ -48,7 +49,8 @@ export class EditListingComponent implements OnInit {
     private route: ActivatedRoute,
     private listingService: ListingService,
     private router: Router,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    public langService: LanguageService
   ) {}
 
   ngOnInit(): void {
@@ -61,13 +63,11 @@ export class EditListingComponent implements OnInit {
   loadCategories(): void {
     this.listingService.getCategories().subscribe({
       next: (data) => {
-        console.log('EDIT CATEGORIES DATA:', data);
         this.categories = data || [];
         this.cdr.detectChanges();
       },
-      error: (error) => {
-        console.log('EDIT CATEGORIES ERROR:', error);
-        this.errorMessage = 'Failed to load categories';
+      error: () => {
+        this.errorMessage = this.langService.t('failedToLoadCategories');
         this.cdr.detectChanges();
       }
     });
@@ -79,8 +79,6 @@ export class EditListingComponent implements OnInit {
 
     this.listingService.getListingById(this.id).subscribe({
       next: (listing: any) => {
-        console.log('EDIT LISTING DATA:', listing);
-
         this.title = listing.title || '';
         this.description = listing.description || '';
         this.price = listing.price ?? null;
@@ -100,9 +98,8 @@ export class EditListingComponent implements OnInit {
         this.isPageLoading = false;
         this.cdr.detectChanges();
       },
-      error: (error) => {
-        console.log('EDIT LISTING ERROR:', error);
-        this.errorMessage = 'Failed to load listing';
+      error: () => {
+        this.errorMessage = this.langService.t('failedToLoadListing');
         this.isPageLoading = false;
         this.cdr.detectChanges();
       }
@@ -112,7 +109,6 @@ export class EditListingComponent implements OnInit {
   loadProfile(): void {
     this.listingService.getProfile().subscribe({
       next: (profile: any) => {
-        console.log('EDIT PROFILE DATA:', profile);
         this.phone = profile.phone || '';
         this.telegram = profile.telegram || '';
         this.whatsapp = profile.whatsapp || '';
@@ -144,9 +140,9 @@ export class EditListingComponent implements OnInit {
 
   validateTitle(): void {
     if (!this.title.trim()) {
-      this.titleError = 'Title is required';
+      this.titleError = this.langService.t('titleRequired');
     } else if (this.title.trim().length < 3) {
-      this.titleError = 'Title must be at least 3 characters';
+      this.titleError = this.langService.t('titleMinLength');
     } else {
       this.titleError = '';
     }
@@ -154,9 +150,9 @@ export class EditListingComponent implements OnInit {
 
   validateDescription(): void {
     if (!this.description.trim()) {
-      this.descriptionError = 'Description is required';
+      this.descriptionError = this.langService.t('descriptionRequired');
     } else if (this.description.trim().length < 10) {
-      this.descriptionError = 'Description must be at least 10 characters';
+      this.descriptionError = this.langService.t('descriptionMinLength');
     } else {
       this.descriptionError = '';
     }
@@ -164,9 +160,9 @@ export class EditListingComponent implements OnInit {
 
   validatePrice(): void {
     if (this.price === null || this.price === undefined) {
-      this.priceError = 'Price is required';
+      this.priceError = this.langService.t('priceRequired');
     } else if (this.price <= 0) {
-      this.priceError = 'Price must be greater than 0';
+      this.priceError = this.langService.t('priceGreaterThanZero');
     } else {
       this.priceError = '';
     }
@@ -174,7 +170,7 @@ export class EditListingComponent implements OnInit {
 
   validateCategory(): void {
     if (!this.category_id) {
-      this.categoryError = 'Category is required';
+      this.categoryError = this.langService.t('categoryRequired');
     } else {
       this.categoryError = '';
     }
@@ -198,29 +194,6 @@ export class EditListingComponent implements OnInit {
 
     this.isLoading = true;
 
-    const profileData = {
-      phone: this.phone,
-      telegram: this.telegram,
-      whatsapp: this.whatsapp,
-      contact_email: this.contact_email,
-      dormitory: this.dormitory,
-      room: this.room
-    };
-
-    this.listingService.updateProfile(profileData).subscribe({
-      next: () => {
-        this.updateListingRequest();
-      },
-      error: (error) => {
-        console.log('EDIT PROFILE UPDATE ERROR:', error);
-        this.errorMessage = 'Failed to save contact information';
-        this.isLoading = false;
-        this.cdr.detectChanges();
-      }
-    });
-  }
-
-  updateListingRequest(): void {
     const formData = new FormData();
     formData.append('title', this.title.trim());
     formData.append('description', this.description.trim());
@@ -241,15 +214,12 @@ export class EditListingComponent implements OnInit {
         this.router.navigate(['/my-listings']);
       },
       error: (error) => {
-        console.log('EDIT UPDATE ERROR:', error);
         this.isLoading = false;
-
         if (error.error?.error) {
           this.errorMessage = error.error.error;
         } else {
-          this.errorMessage = 'Failed to update listing';
+          this.errorMessage = this.langService.t('failedToUpdateListing');
         }
-
         this.cdr.detectChanges();
       }
     });

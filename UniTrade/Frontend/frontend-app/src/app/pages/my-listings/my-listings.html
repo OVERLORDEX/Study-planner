@@ -1,9 +1,9 @@
 <div class="my-listings-page">
   <div class="page-header">
     <div class="page-header-card">
-      <div class="header-badge">Your marketplace posts</div>
-      <h1>My Listings</h1>
-      <p>Manage, edit, and remove the items you published on UniTrade.</p>
+      <div class="header-badge">{{ langService.t('yourMarketplacePosts') }}</div>
+      <h1>{{ langService.t('myListings') }}</h1>
+      <p>{{ langService.t('manageYourListingsSubtitle') }}</p>
     </div>
   </div>
 
@@ -13,14 +13,14 @@
     }
 
     @if (isLoading) {
-      <div class="message-box loading-box">Loading your listings...</div>
+      <div class="message-box loading-box">{{ langService.t('loadingYourListings') }}</div>
     }
 
     @if (!isLoading && listings.length === 0) {
       <div class="empty-state">
-        <h3>You have no listings yet</h3>
-        <p>Create your first item and start sharing it with other students.</p>
-        <a routerLink="/create-listing" class="empty-btn">Create Listing</a>
+        <h3>{{ langService.t('youHaveNoListingsYet') }}</h3>
+        <p>{{ langService.t('createFirstItemPrompt') }}</p>
+        <a routerLink="/create-listing" class="empty-btn">{{ langService.t('createListingBtn') }}</a>
       </div>
     }
 
@@ -39,8 +39,8 @@
               <p class="category">{{ listing.category.name }}</p>
 
               <div class="card-actions">
-                <a [routerLink]="['/edit-listing', listing.id]" class="edit-btn">Edit</a>
-                <button class="delete-btn" (click)="deleteListing(listing.id)">Delete</button>
+                <a [routerLink]="['/edit-listing', listing.id]" class="edit-btn">{{ langService.t('edit') }}</a>
+                <button class="delete-btn" (click)="deleteListing(listing.id)">{{ langService.t('delete') }}</button>
               </div>
             </div>
           </div>

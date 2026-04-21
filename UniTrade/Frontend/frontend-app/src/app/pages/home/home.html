@@ -1,75 +1,87 @@
 <div class="home-page">
   <section class="hero-section">
     <div class="hero-left">
-      <div class="hero-badge">Student marketplace platform</div>
-      <h1>Buy, sell, and discover items on UniTrade</h1>
-      <p>
-        A clean campus marketplace where students can post listings, find useful products,
-        save favorites, and manage everything in one place.
-      </p>
+      <div class="hero-badge">{{ langService.t('homeBadge') }}</div>
+      <h1>{{ langService.t('homeTitle') }}</h1>
+      <p>{{ langService.t('homeSubtitle') }}</p>
 
       <div class="hero-actions">
-        <a routerLink="/listings" class="primary-btn">Browse Listings</a>
-        <a routerLink="/create-listing" class="secondary-btn">Create Listing</a>
+        <a routerLink="/listings" class="primary-btn">{{ langService.t('browseListings') }}</a>
+        <a routerLink="/create-listing" class="secondary-btn">{{ langService.t('createListingBtn') }}</a>
       </div>
 
       <div class="hero-stats">
         <div class="stat-box">
-          <strong>Fast</strong>
-          <span>Simple posting flow</span>
+          <strong>{{ langService.t('fast') }}</strong>
+          <span>{{ langService.t('fastDesc') }}</span>
         </div>
         <div class="stat-box">
-          <strong>Smart</strong>
-          <span>Filter and category search</span>
+          <strong>{{ langService.t('smart') }}</strong>
+          <span>{{ langService.t('smartDesc') }}</span>
         </div>
         <div class="stat-box">
-          <strong>Safe</strong>
-          <span>Campus-focused trading</span>
+          <strong>{{ langService.t('safe') }}</strong>
+          <span>{{ langService.t('safeDesc') }}</span>
         </div>
       </div>
     </div>
 
-   <div class="hero-right">
-  <div class="preview-card main-card">
-    <img class="preview-photo" [src]="currentItem.image" [alt]="currentItem.title" />
+    <div class="hero-right">
+      <div class="preview-card main-card">
+        <img class="preview-photo" [src]="currentItem.image" [alt]="currentItem.title" />
+        <div class="preview-content">
+          <h3>{{ currentItem.title }}</h3>
+          <p>{{ langService.t(currentItem.categoryKey) }} • {{ currentItem.condition }}</p>
+          <strong>{{ currentItem.price }}</strong>
+        </div>
+      </div>
 
-    <div class="preview-content">
-      <h3>{{ currentItem.title }}</h3>
-      <p>{{ currentItem.category }} • {{ currentItem.condition }}</p>
-      <strong>{{ currentItem.price }}</strong>
+      <div class="floating-card top-card">
+        <span>{{ langService.t(previewItems[(currentIndex + 1) % previewItems.length].categoryKey) }}</span>
+      </div>
+
+      <div class="floating-card bottom-card">
+        <span>{{ langService.t(previewItems[(currentIndex + 2) % previewItems.length].categoryKey) }}</span>
+      </div>
     </div>
-  </div>
+  </section>
 
-  <div class="floating-card top-card">
-    <span>{{ previewItems[(currentIndex + 1) % previewItems.length].category }}</span>
-  </div>
+  <section class="categories-section">
+    <div class="section-header">
+      <h2>{{ langService.t('browseByCategory') }}</h2>
+      <p>{{ langService.t('browseByCategoryDesc') }}</p>
+    </div>
 
-  <div class="floating-card bottom-card">
-    <span>{{ previewItems[(currentIndex + 2) % previewItems.length].category }}</span>
-  </div>
-</div>
+    <div class="categories-grid">
+      @for (category of categories; track category.id) {
+        <a [routerLink]="['/listings']" [queryParams]="{category: category.id}" class="category-card-home">
+          <div class="category-info">
+            <h3>{{ langService.t(category.nameKey) }}</h3>
+            <p>{{ langService.t(category.descriptionKey) }}</p>
+          </div>
+        </a>
+      }
+    </div>
   </section>
 
   <section class="features-section">
     <div class="section-header">
-      <h2>Why UniTrade works well</h2>
-      <p>Designed for a simple and modern student marketplace experience.</p>
+      <h2>{{ langService.t('whyWorks') }}</h2>
+      <p>{{ langService.t('whyWorksDesc') }}</p>
     </div>
 
     <div class="features-grid">
       <div class="feature-card">
-        <h3>Easy posting</h3>
-        <p>Create listings with clear details, categories, price, and photo upload.</p>
+        <h3>{{ langService.t('easyPosting') }}</h3>
+        <p>{{ langService.t('easyPostingDesc') }}</p>
       </div>
-
       <div class="feature-card">
-        <h3>Personal dashboard</h3>
-        <p>Manage your own listings, edit them, or delete them whenever needed.</p>
+        <h3>{{ langService.t('personalDashboard') }}</h3>
+        <p>{{ langService.t('personalDashboardDesc') }}</p>
       </div>
-
       <div class="feature-card">
-        <h3>Favorites system</h3>
-        <p>Save interesting listings and return to them later without searching again.</p>
+        <h3>{{ langService.t('favoritesSystem') }}</h3>
+        <p>{{ langService.t('favoritesSystemDesc') }}</p>
       </div>
     </div>
   </section>

@@ -2,29 +2,29 @@
   <div class="edit-card">
     <div class="intro-block">
       <div class="intro-content">
-        <div class="intro-badge">Manage your marketplace post</div>
-        <h1>Edit Listing</h1>
+        <div class="intro-badge">{{ langService.t('manageMarketplacePost') }}</div>
+        <h1>{{ langService.t('editListing') }}</h1>
         <p>
-          Update your item information and keep your UniTrade post fresh and accurate.
+          {{ langService.t('editListingIntro') }}
         </p>
       </div>
     </div>
 
     <div class="form-block">
       <div *ngIf="isPageLoading" class="message-box loading-box">
-        Loading listing...
+        {{ langService.t('loadingListing') }}
       </div>
 
       <div *ngIf="!isPageLoading">
-        <h2>Edit details</h2>
-        <p class="subtitle">Update the item information below</p>
+        <h2>{{ langService.t('editDetails') }}</h2>
+        <p class="subtitle">{{ langService.t('updateItemInfo') }}</p>
 
         <div class="form-grid">
           <div class="input-group full">
-            <label class="input-label">Title</label>
+            <label class="input-label">{{ langService.t('title') }}</label>
             <input
               type="text"
-              placeholder="Title"
+              [placeholder]="langService.t('title')"
               [(ngModel)]="title"
               (blur)="validateTitle()"
             />
@@ -32,10 +32,10 @@
           </div>
 
           <div class="input-group full">
-            <label class="input-label">Description</label>
+            <label class="input-label">{{ langService.t('description') }}</label>
             <textarea
               rows="5"
-              placeholder="Description"
+              [placeholder]="langService.t('description')"
               [(ngModel)]="description"
               (blur)="validateDescription()"
             ></textarea>
@@ -43,10 +43,10 @@
           </div>
 
           <div class="input-group">
-            <label class="input-label">Price</label>
+            <label class="input-label">{{ langService.t('price') }}</label>
             <input
               type="number"
-              placeholder="Price"
+              [placeholder]="langService.t('price')"
               [(ngModel)]="price"
               (blur)="validatePrice()"
             />
@@ -54,16 +54,16 @@
           </div>
 
           <div class="input-group">
-            <label class="input-label">Location</label>
+            <label class="input-label">{{ langService.t('location') }}</label>
             <input
               type="text"
-              placeholder="Location (Dormitory / Campus)"
+              [placeholder]="langService.t('locationDormCampus')"
               [(ngModel)]="location"
             />
           </div>
 
           <div class="input-group full">
-            <label class="upload-label">Change photo</label>
+            <label class="upload-label">{{ langService.t('changePhoto') }}</label>
             <input
               type="file"
               accept="image/*"
@@ -80,82 +80,82 @@
             </div>
 
             <p *ngIf="!imagePreview && !currentImageUrl" class="muted-text">
-              No photo uploaded yet.
+              {{ langService.t('noPhotoUploadedYet') }}
             </p>
           </div>
 
           <div class="input-group">
-            <label class="input-label">Condition</label>
+            <label class="input-label">{{ langService.t('condition') }}</label>
             <select [(ngModel)]="condition">
-              <option value="new">New</option>
-              <option value="used">Used</option>
+              <option value="new">{{ langService.t('newCondition') }}</option>
+              <option value="used">{{ langService.t('usedCondition') }}</option>
             </select>
           </div>
 
           <div class="input-group">
-            <label class="input-label">Status</label>
+            <label class="input-label">{{ langService.t('status') }}</label>
             <select [(ngModel)]="status">
-              <option value="available">Available</option>
-              <option value="reserved">Reserved</option>
-              <option value="sold">Sold</option>
+              <option value="available">{{ langService.t('available') }}</option>
+              <option value="reserved">{{ langService.t('reserved') }}</option>
+              <option value="sold">{{ langService.t('sold') }}</option>
             </select>
           </div>
 
           <div class="input-group full">
-            <label class="input-label">Category</label>
+            <label class="input-label">{{ langService.t('category') }}</label>
             <select [(ngModel)]="category_id" (blur)="validateCategory()">
-              <option value="">Select category</option>
-              <option *ngFor="let category of categories" [value]="category.id">
-                {{ category.name }}
-              </option>
+              <option value="" disabled>{{ langService.t('selectCategory') }}</option>
+              @for (category of categories; track category.id) {
+                <option [value]="category.id">{{ category.name }}</option>
+              }
             </select>
             <p *ngIf="categoryError" class="field-error">{{ categoryError }}</p>
           </div>
 
           <div class="input-group full">
-            <h3 class="section-title">Contact Information</h3>
+            <h3 class="section-title">{{ langService.t('contactInformation') }}</h3>
           </div>
 
           <div class="input-group">
-            <label class="input-label">Phone</label>
-            <input type="text" placeholder="Phone number" [(ngModel)]="phone" />
+            <label class="input-label">{{ langService.t('phone') }}</label>
+            <input type="text" [placeholder]="langService.t('phoneNumber')" [(ngModel)]="phone" />
           </div>
 
           <div class="input-group">
-            <label class="input-label">Telegram</label>
-            <input type="text" placeholder="@username" [(ngModel)]="telegram" />
+            <label class="input-label">{{ langService.t('telegram') }}</label>
+            <input type="text" [placeholder]="langService.t('telegramPlaceholder')" [(ngModel)]="telegram" />
           </div>
 
           <div class="input-group">
-            <label class="input-label">WhatsApp</label>
-            <input type="text" placeholder="WhatsApp number" [(ngModel)]="whatsapp" />
+            <label class="input-label">{{ langService.t('whatsapp') }}</label>
+            <input type="text" [placeholder]="langService.t('whatsappNumber')" [(ngModel)]="whatsapp" />
           </div>
 
           <div class="input-group">
-            <label class="input-label">Email</label>
-            <input type="email" placeholder="Email" [(ngModel)]="contact_email" />
+            <label class="input-label">{{ langService.t('email') }}</label>
+            <input type="email" [placeholder]="langService.t('email')" [(ngModel)]="contact_email" />
           </div>
 
           <div class="input-group">
-            <label class="input-label">Dormitory</label>
-            <input type="text" placeholder="Dormitory" [(ngModel)]="dormitory" />
+            <label class="input-label">{{ langService.t('dormitory') }}</label>
+            <input type="text" [placeholder]="langService.t('dormitory')" [(ngModel)]="dormitory" />
           </div>
 
           <div class="input-group">
-            <label class="input-label">Room</label>
-            <input type="text" placeholder="Room" [(ngModel)]="room" />
+            <label class="input-label">{{ langService.t('room') }}</label>
+            <input type="text" [placeholder]="langService.t('room')" [(ngModel)]="room" />
           </div>
         </div>
 
         <button class="edit-btn" (click)="onUpdate()" [disabled]="isLoading">
-          {{ isLoading ? 'Saving...' : 'Save Changes' }}
+          {{ isLoading ? langService.t('saving') : langService.t('saveChanges') }}
         </button>
 
         <p *ngIf="errorMessage" class="server-error">{{ errorMessage }}</p>
 
         <p class="back-link">
-          Want to return?
-          <a routerLink="/my-listings">Back to My Listings</a>
+          {{ langService.t('wantToReturn') }}
+          <a routerLink="/my-listings">{{ langService.t('backToMyListings') }}</a>
         </p>
       </div>
     </div>

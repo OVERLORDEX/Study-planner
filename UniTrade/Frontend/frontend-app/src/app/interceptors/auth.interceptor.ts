@@ -4,7 +4,7 @@ import { isPlatformBrowser } from '@angular/common';
 
 export const authInterceptor: HttpInterceptorFn = (req, next) => {
   const platformId = inject(PLATFORM_ID);
-  const browser = isPlatformBrowser(platformId);
+  const isBrowser = isPlatformBrowser(platformId);
 
   const isPublicRequest =
     req.url.includes('/api/login/') ||
@@ -16,7 +16,11 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
     return next(req);
   }
 
-  const token = browser ? sessionStorage.getItem('access') : null;
+  let token: string | null = null;
+
+  if (isBrowser) {
+    token = sessionStorage.getItem('access');
+  }
 
   if (token) {
     req = req.clone({

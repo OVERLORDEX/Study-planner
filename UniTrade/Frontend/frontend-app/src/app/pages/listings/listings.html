@@ -1,35 +1,29 @@
 <div class="listings-page">
   <div class="hero-section">
     <div class="hero-content">
-      <div class="hero-badge">Student marketplace</div>
-      <h1>Find what you need on UniTrade</h1>
-      <p>
-        Browse listings, discover useful items, and connect with students inside your campus community.
-      </p>
+      <div class="hero-badge">{{ langService.t('listingsBadge') }}</div>
+      <h1>{{ langService.t('listingsTitle') }}</h1>
+      <p>{{ langService.t('listingsSubtitle') }}</p>
     </div>
   </div>
 
   <div class="marketplace-container">
     <div class="filters-card">
       <div class="filters-header">
-        <h2>Explore Listings</h2>
-        <p>Search, filter, and sort items easily</p>
+        <h2>{{ langService.t('exploreListings') }}</h2>
+        <p>{{ langService.t('searchFilterSort') }}</p>
       </div>
 
       <div class="filters-grid">
         <div class="filter-group search-group">
-          <label>Search</label>
-          <input
-            type="text"
-            placeholder="Search by title"
-            [(ngModel)]="searchText"
-          />
+          <label>{{ langService.t('search') }}</label>
+          <input type="text" [placeholder]="langService.t('searchByTitle')" [(ngModel)]="searchText" />
         </div>
 
         <div class="filter-group">
-          <label>Category</label>
+          <label>{{ langService.t('category') }}</label>
           <select [(ngModel)]="selectedCategory">
-            <option value="">All Categories</option>
+            <option value="">{{ langService.t('allCategories') }}</option>
             @for (category of categories; track category.id) {
               <option [value]="category.id">{{ category.name }}</option>
             }
@@ -37,38 +31,34 @@
         </div>
 
         <div class="filter-group">
-          <label>Sort by</label>
+          <label>{{ langService.t('sortBy') }}</label>
           <select [(ngModel)]="ordering">
-            <option value="">Newest</option>
-            <option value="price_asc">Price: Low to High</option>
-            <option value="price_desc">Price: High to Low</option>
+            <option value="">{{ langService.t('newest') }}</option>
+            <option value="price_asc">{{ langService.t('priceLowHigh') }}</option>
+            <option value="price_desc">{{ langService.t('priceHighLow') }}</option>
           </select>
         </div>
       </div>
 
       <div class="filters-actions">
-        <button class="apply-btn" (click)="applyFilters()">Apply Filters</button>
-        <button class="clear-btn" (click)="clearFilters()">Clear</button>
+        <button class="apply-btn" (click)="applyFilters()">{{ langService.t('applyFilters') }}</button>
+        <button class="clear-btn" (click)="clearFilters()">{{ langService.t('clear') }}</button>
       </div>
     </div>
 
     @if (errorMessage) {
-      <div class="message-box error-box">
-        {{ errorMessage }}
-      </div>
+      <div class="message-box error-box">{{ errorMessage }}</div>
     }
 
     @if (isLoading) {
-      <div class="message-box loading-box">
-        Loading listings...
-      </div>
+      <div class="message-box loading-box">{{ langService.t('loadingListings') }}</div>
     }
 
     @if (!isLoading && listings.length === 0) {
       <div class="empty-state">
-        <h3>No listings found</h3>
-        <p>Try changing your filters or be the first to publish an item.</p>
-        <a routerLink="/create-listing" class="empty-btn">Create Listing</a>
+        <h3>{{ langService.t('noListingsFound') }}</h3>
+        <p>{{ langService.t('tryChangingFilters') }}</p>
+        <a routerLink="/create-listing" class="empty-btn">{{ langService.t('createListingBtn') }}</a>
       </div>
     }
 
@@ -88,12 +78,10 @@
               </div>
 
               <p class="category">{{ listing.category.name }}</p>
-              <p class="location">{{ listing.location || 'Campus location not specified' }}</p>
+              <p class="location">{{ listing.location || langService.t('campusLocationNotSpecified') }}</p>
 
               <div class="card-footer">
-                <a [routerLink]="['/listings', listing.id]" class="details-btn">
-                  View Details
-                </a>
+                <a [routerLink]="['/listings', listing.id]" class="details-btn">{{ langService.t('viewDetails') }}</a>
               </div>
             </div>
           </div>

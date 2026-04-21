@@ -1,37 +1,47 @@
 from django.urls import path
 from .views import (
-    register_view,
-    login_view,
-    logout_view,
+    RegisterAPIView,
+    LoginAPIView,
+    LogoutAPIView,
     CategoryListAPIView,
-    ListingListCreateAPIView,
+    ListingListAPIView,
     ListingDetailAPIView,
+    CreateListingAPIView,
+    EditListingAPIView,
+    DeleteListingAPIView,
     MyListingsAPIView,
-    ProfileAPIView,
-    FavoriteListCreateAPIView,
-    FavoriteDeleteAPIView,
-    CommentListCreateAPIView,
-    RatingCreateAPIView,
-    ChangePasswordAPIView
+    FavoriteListAPIView,
+    AddFavoriteAPIView,
+    RemoveFavoriteAPIView,
+    CommentListAPIView,
+    AddCommentAPIView,
+    AddRatingAPIView,
+    ProfileMeAPIView,
 )
 
 urlpatterns = [
-    path('register/', register_view),
-    path('login/', login_view),
-    path('logout/', logout_view),
+    path('register/', RegisterAPIView.as_view()),
+    path('login/', LoginAPIView.as_view()),
+    path('logout/', LogoutAPIView.as_view()),
 
     path('categories/', CategoryListAPIView.as_view()),
 
-    path('listings/', ListingListCreateAPIView.as_view()),
+    path('listings/', ListingListAPIView.as_view()),
+    path('listings/create/', CreateListingAPIView.as_view()),
     path('listings/<int:pk>/', ListingDetailAPIView.as_view()),
+    path('listings/<int:pk>/edit/', EditListingAPIView.as_view()),
+    path('listings/<int:pk>/delete/', DeleteListingAPIView.as_view()),
+
     path('my-listings/', MyListingsAPIView.as_view()),
 
-    path('profile/', ProfileAPIView.as_view()),
+    path('favorites/', FavoriteListAPIView.as_view()),
+    path('favorites/add/', AddFavoriteAPIView.as_view()),
+    path('favorites/remove/', RemoveFavoriteAPIView.as_view()),
 
-    path('favorites/', FavoriteListCreateAPIView.as_view()),
-    path('favorites/<int:listing_id>/', FavoriteDeleteAPIView.as_view()),
+    path('listings/<int:pk>/comments/', CommentListAPIView.as_view()),
+    path('listings/<int:pk>/comments/add/', AddCommentAPIView.as_view()),
 
-    path('listings/<int:listing_id>/comments/', CommentListCreateAPIView.as_view()),
-    path('listings/<int:listing_id>/rate/', RatingCreateAPIView.as_view()),
-    path('change-password/', ChangePasswordAPIView.as_view()),
+    path('ratings/add/', AddRatingAPIView.as_view()),
+
+    path('profile/me/', ProfileMeAPIView.as_view()),
 ]

@@ -2,49 +2,32 @@
   <div class="register-card">
     <div class="brand-block">
       <div class="brand-content">
-        <div class="brand-badge">Student marketplace</div>
+        <div class="brand-badge">{{ langService.t('studentMarketplace') }}</div>
         <h1>UniTrade</h1>
-        <p>
-          Create your account and start buying or selling inside the student community.
-        </p>
+        <p>{{ langService.t('registerIntro') }}</p>
       </div>
     </div>
 
     <div class="form-block">
-      <h2>Create account</h2>
-      <p class="subtitle">Join UniTrade in a few steps</p>
+      <h2>{{ langService.t('createAccount') }}</h2>
+      <p class="subtitle">{{ langService.t('joinInFewSteps') }}</p>
 
       <div class="input-group">
-        <input
-          type="text"
-          placeholder="Username"
-          [(ngModel)]="username"
-          (blur)="validateUsername()"
-        />
+        <input type="text" [placeholder]="langService.t('username')" [(ngModel)]="username" (blur)="validateUsername()" />
         @if (usernameError) {
           <p class="field-error">{{ usernameError }}</p>
         }
       </div>
 
       <div class="input-group">
-        <input
-          type="email"
-          placeholder="Email"
-          [(ngModel)]="email"
-          (blur)="validateEmail()"
-        />
+        <input type="email" [placeholder]="langService.t('email')" [(ngModel)]="email" (blur)="validateEmail()" />
         @if (emailError) {
           <p class="field-error">{{ emailError }}</p>
         }
       </div>
 
       <div class="input-group">
-        <input
-          type="password"
-          placeholder="Password"
-          [(ngModel)]="password"
-          (blur)="validatePassword()"
-        />
+        <input type="password" [placeholder]="langService.t('password')" [(ngModel)]="password" (blur)="validatePassword()" />
         @if (passwordError) {
           <p class="field-error">{{ passwordError }}</p>
         }
@@ -52,9 +35,9 @@
 
       <button class="register-btn" (click)="onRegister()" [disabled]="isLoading">
         @if (!isLoading) {
-          Register
+          {{ langService.t('register') }}
         } @else {
-          Creating...
+          {{ langService.t('creating') }}
         }
       </button>
 
@@ -63,12 +46,12 @@
       }
 
       <div class="divider">
-        <span>or</span>
+        <span>{{ langService.t('or') }}</span>
       </div>
 
       <p class="login-link">
-        Already have an account?
-        <a routerLink="/login">Login</a>
+        {{ langService.t('alreadyHaveAccount') }}
+        <a routerLink="/login">{{ langService.t('login') }}</a>
       </p>
     </div>
   </div>

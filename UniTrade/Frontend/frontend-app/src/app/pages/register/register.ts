@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '../../services/auth';
+import { LanguageService } from '../../services/language';
 
 @Component({
   selector: 'app-register',
@@ -23,14 +24,15 @@ export class RegisterComponent {
 
   constructor(
     private authService: AuthService,
-    private router: Router
+    private router: Router,
+    public langService: LanguageService
   ) {}
 
   validateUsername(): void {
     if (!this.username.trim()) {
-      this.usernameError = 'Username is required';
+      this.usernameError = this.langService.t('usernameRequired');
     } else if (this.username.trim().length < 3) {
-      this.usernameError = 'Username must be at least 3 characters';
+      this.usernameError = this.langService.t('usernameMinLength');
     } else {
       this.usernameError = '';
     }
@@ -38,11 +40,10 @@ export class RegisterComponent {
 
   validateEmail(): void {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
     if (!this.email.trim()) {
-      this.emailError = 'Email is required';
+      this.emailError = this.langService.t('emailRequired');
     } else if (!emailRegex.test(this.email)) {
-      this.emailError = 'Enter a valid email address';
+      this.emailError = this.langService.t('validEmailRequired');
     } else {
       this.emailError = '';
     }
@@ -50,9 +51,9 @@ export class RegisterComponent {
 
   validatePassword(): void {
     if (!this.password.trim()) {
-      this.passwordError = 'Password is required';
+      this.passwordError = this.langService.t('passwordRequired');
     } else if (this.password.length < 8) {
-      this.passwordError = 'Password must be at least 8 characters';
+      this.passwordError = this.langService.t('passwordMinLength');
     } else {
       this.passwordError = '';
     }
@@ -62,16 +63,12 @@ export class RegisterComponent {
     this.validateUsername();
     this.validateEmail();
     this.validatePassword();
-
     return !this.usernameError && !this.emailError && !this.passwordError;
   }
 
   onRegister(): void {
     this.errorMessage = '';
-
-    if (!this.validateForm()) {
-      return;
-    }
+    if (!this.validateForm()) return;
 
     this.isLoading = true;
 
@@ -87,7 +84,6 @@ export class RegisterComponent {
       },
       error: (error) => {
         this.isLoading = false;
-
         if (error.error?.username) {
           this.errorMessage = error.error.username[0];
         } else if (error.error?.email) {
@@ -97,7 +93,7 @@ export class RegisterComponent {
         } else if (error.error?.detail) {
           this.errorMessage = error.error.detail;
         } else {
-          this.errorMessage = 'Registration failed. Please check your data.';
+          this.errorMessage = this.langService.t('registrationFailed');
         }
       }
     });

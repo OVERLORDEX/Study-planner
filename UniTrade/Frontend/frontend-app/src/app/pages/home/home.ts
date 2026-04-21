@@ -1,6 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
+import { LanguageService } from '../../services/language';
 
 @Component({
   selector: 'app-home',
@@ -10,28 +11,18 @@ import { RouterLink } from '@angular/router';
   styleUrl: './home.css'
 })
 export class HomeComponent implements OnInit, OnDestroy {
+  constructor(public langService: LanguageService) {}
+
+  categories = [
+    { id: 1, nameKey: 'electronics', descriptionKey: 'electronicsDesc' },
+    { id: 2, nameKey: 'booksStudy', descriptionKey: 'booksDesc' },
+    { id: 3, nameKey: 'homeDorm', descriptionKey: 'homeDormDesc' }
+  ];
+
   previewItems = [
-    {
-      title: 'MacBook Air M1',
-      category: 'Electronics',
-      condition: 'Good condition',
-      price: '320000 ₸',
-      image: 'Macbook.jpg'
-    },
-    {
-      title: 'Manga Books Set',
-      category: 'Books & Study Materials',
-      condition: 'Used',
-      price: '12000 ₸',
-      image: 'books.jpg'
-    },
-    {
-      title: 'Table Lamp',
-      category: 'Home & Dorm Items',
-      condition: 'New',
-      price: '8500 ₸',
-      image: 'lamp.jpg'
-    }
+    { title: 'MacBook Air M1', categoryKey: 'electronics', condition: 'Good condition', price: '320000 ₸', image: 'Macbook.jpg' },
+    { title: 'Manga Books Set', categoryKey: 'booksStudy', condition: 'Used', price: '12000 ₸', image: 'books.jpg' },
+    { title: 'Table Lamp', categoryKey: 'homeDorm', condition: 'New', price: '8500 ₸', image: 'lamp.jpg' }
   ];
 
   currentIndex = 0;

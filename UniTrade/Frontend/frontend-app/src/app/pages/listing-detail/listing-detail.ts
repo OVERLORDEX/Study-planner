@@ -1,9 +1,10 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { FormsModule } from '@angular/forms';
+import { CommonModule } from '@angular/common';
 import { ListingService } from '../../services/listing';
 import { Listing } from '../../models/listing';
+import { LanguageService } from '../../services/language';
 
 @Component({
   selector: 'app-listing-detail',
@@ -18,12 +19,13 @@ export class ListingDetailComponent implements OnInit {
   commentText = '';
   errorMessage = '';
   isLoading = true;
-  selectedRating = 0;
+  isContactModalOpen = false;
 
   constructor(
     private route: ActivatedRoute,
     private listingService: ListingService,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    public langService: LanguageService
   ) {}
 
   ngOnInit(): void {
@@ -38,14 +40,12 @@ export class ListingDetailComponent implements OnInit {
 
     this.listingService.getListingById(id).subscribe({
       next: (data) => {
-        console.log('DETAIL DATA:', data);
         this.listing = data;
         this.isLoading = false;
         this.cdr.detectChanges();
       },
-      error: (error) => {
-        console.log('DETAIL ERROR:', error);
-        this.errorMessage = 'Failed to load listing';
+      error: () => {
+        this.errorMessage = this.langService.t('failedToLoadListing');
         this.isLoading = false;
         this.cdr.detectChanges();
       }
@@ -55,12 +55,8 @@ export class ListingDetailComponent implements OnInit {
   loadComments(id: number): void {
     this.listingService.getComments(id).subscribe({
       next: (data) => {
-        console.log('COMMENTS DATA:', data);
-        this.comments = data || [];
+        this.comments = data;
         this.cdr.detectChanges();
-      },
-      error: (error) => {
-        console.log('COMMENTS ERROR:', error);
       }
     });
   }
@@ -68,14 +64,21 @@ export class ListingDetailComponent implements OnInit {
   addToFavorites(): void {
     if (!this.listing) return;
 
-    this.listingService.addToFavorites(this.listing.id).subscribe({
-      next: () => {
-        alert('Added to favorites');
-      },
-      error: () => {
-        alert('You need to log in first');
-      }
-    });
+    if (this.listing.is_favorited) {
+      this.listingService.removeFromFavorites(this.listing.id).subscribe({
+        next: () => {
+          if (this.listing) this.listing.is_favorited = false;
+        },
+        error: () => alert(this.langService.t('failedToRemoveFavorite'))
+      });
+    } else {
+      this.listingService.addToFavorites(this.listing.id).subscribe({
+        next: () => {
+          if (this.listing) this.listing.is_favorited = true;
+        },
+        error: () => alert(this.langService.t('needLoginFirst'))
+      });
+    }
   }
 
   addComment(): void {
@@ -87,30 +90,24 @@ export class ListingDetailComponent implements OnInit {
         this.loadComments(this.listing!.id);
       },
       error: () => {
-        this.errorMessage = 'Failed to add comment';
+        this.errorMessage = this.langService.t('failedToAddComment');
         this.cdr.detectChanges();
       }
     });
   }
 
   rateListing(score: number): void {
-  if (!this.listing) return;
+    if (!this.listing) return;
 
-  this.listingService.rateListing(this.listing.id, score).subscribe({
-    next: () => {
-      this.loadListing(this.listing!.id);
-    },
-    error: () => {
-      alert('You need to log in first');
-    }
-  });
+    this.listingService.rateListing(this.listing.id, score).subscribe({
+      next: () => this.loadListing(this.listing!.id),
+      error: () => alert(this.langService.t('needLoginFirst'))
+    });
   }
 
   getImageUrl(listing: any): string {
     if (listing?.image) {
-      if (listing.image.startsWith('http')) {
-        return listing.image;
-      }
+      if (listing.image.startsWith('http')) return listing.image;
       return `http://127.0.0.1:8000${listing.image}`;
     }
     return 'https://via.placeholder.com/700x500?text=UniTrade';

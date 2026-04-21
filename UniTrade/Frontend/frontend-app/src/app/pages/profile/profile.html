@@ -1,38 +1,79 @@
 <div class="profile-page">
-  <div class="profile-card">
-    <h1>My Profile</h1>
+  <div class="page-header">
+    <div class="page-header-card">
+      <div class="header-badge">{{ langService.t('personalDashboard') }}</div>
+      <h1>{{ langService.t('profileSettings') }}</h1>
+      <p>{{ langService.t('profileSettingsSubtitle') }}</p>
+    </div>
+  </div>
 
-    <div class="avatar-section">
-      <input type="file" accept="image/*" (change)="onAvatarSelected($event)" />
-      <div *ngIf="avatarPreview" class="avatar-preview">
-        <img [src]="avatarPreview" alt="Avatar" />
+  <div class="page-container">
+    @if (isLoading) {
+      <div class="message-box loading-box">{{ langService.t('loadingProfile') }}</div>
+    }
+
+    @if (errorMessage) {
+      <div class="message-box error-box">{{ errorMessage }}</div>
+    }
+
+    @if (successMessage) {
+      <div class="message-box success-box">{{ successMessage }}</div>
+    }
+
+    @if (!isLoading && profile) {
+      <div class="profile-card">
+        <div class="profile-form">
+          <div class="form-group">
+            <label>{{ langService.t('username') }}</label>
+            <input type="text" [value]="profile.user.username" disabled />
+          </div>
+
+          <div class="form-group">
+            <label>{{ langService.t('email') }}</label>
+            <input type="text" [value]="profile.user.email" disabled />
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label>{{ langService.t('phoneNumberWhatsApp') }}</label>
+              <input type="text" [(ngModel)]="editData.phone" [placeholder]="langService.t('phoneExample')" />
+            </div>
+
+            <div class="form-group">
+              <label>{{ langService.t('telegramUsername') }}</label>
+              <input type="text" [(ngModel)]="editData.telegram_username" [placeholder]="langService.t('telegramWithoutAt')" />
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>{{ langService.t('bioAboutMe') }}</label>
+            <textarea [(ngModel)]="editData.bio" rows="4" [placeholder]="langService.t('bioPlaceholder')"></textarea>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label>{{ langService.t('universityId') }}</label>
+              <input type="text" [(ngModel)]="editData.university_id" [placeholder]="langService.t('studentId')" />
+            </div>
+
+            <div class="form-group">
+              <label>{{ langService.t('dormitory') }}</label>
+              <input type="text" [(ngModel)]="editData.dormitory" [placeholder]="langService.t('dormitoryExample')" />
+            </div>
+
+            <div class="form-group">
+              <label>{{ langService.t('room') }}</label>
+              <input type="text" [(ngModel)]="editData.room" [placeholder]="langService.t('roomExample')" />
+            </div>
+          </div>
+
+          <div class="form-actions">
+            <button class="save-btn" [disabled]="isSaving" (click)="saveProfile()">
+              {{ isSaving ? langService.t('saving') : langService.t('saveChanges') }}
+            </button>
+          </div>
+        </div>
       </div>
-    </div>
-
-    <div class="profile-grid">
-      <input type="text" placeholder="First name" [(ngModel)]="first_name" />
-      <input type="text" placeholder="Last name" [(ngModel)]="last_name" />
-      <input type="number" placeholder="Birth year" [(ngModel)]="birth_year" />
-      <input type="text" placeholder="Phone" [(ngModel)]="phone" />
-      <input type="text" placeholder="Telegram" [(ngModel)]="telegram" />
-      <input type="text" placeholder="WhatsApp" [(ngModel)]="whatsapp" />
-      <input type="email" placeholder="Email" [(ngModel)]="contact_email" />
-      <input type="text" placeholder="Dormitory" [(ngModel)]="dormitory" />
-      <input type="text" placeholder="Room" [(ngModel)]="room" />
-    </div>
-
-    <button (click)="saveProfile()" [disabled]="isLoading">
-      {{ isLoading ? 'Saving...' : 'Save Profile' }}
-    </button>
-
-    <div class="password-box">
-      <h2>Change Password</h2>
-      <input type="password" placeholder="Old password" [(ngModel)]="old_password" />
-      <input type="password" placeholder="New password" [(ngModel)]="new_password" />
-      <button (click)="changePassword()">Change Password</button>
-    </div>
-
-    <p *ngIf="message" class="success">{{ message }}</p>
-    <p *ngIf="errorMessage" class="error">{{ errorMessage }}</p>
+    }
   </div>
 </div>

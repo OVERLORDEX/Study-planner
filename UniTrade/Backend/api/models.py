@@ -16,13 +16,10 @@ class Profile(models.Model):
     dormitory = models.CharField(max_length=100, blank=True)
     room = models.CharField(max_length=20, blank=True)
     avatar_url = models.URLField(blank=True)
-    telegram = models.CharField(max_length=100, blank=True)
-    whatsapp = models.CharField(max_length=20, blank=True)
-    contact_email = models.EmailField(blank=True)
-    first_name = models.CharField(max_length=100, blank=True)
-    last_name = models.CharField(max_length=100, blank=True)
-    birth_year = models.PositiveIntegerField(blank=True, null=True)
-    avatar = models.ImageField(upload_to='profile_avatars/', blank=True, null=True)
+    avatar = models.ImageField(upload_to='avatars/', blank=True, null=True)
+    bio = models.TextField(blank=True)
+    telegram_username = models.CharField(max_length=100, blank=True)
+    university_id = models.CharField(max_length=50, blank=True)
 
     def __str__(self):
         return f"{self.user.username} Profile"

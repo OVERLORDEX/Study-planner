@@ -18,10 +18,6 @@ export class AuthService {
 
   constructor(private http: HttpClient) {}
 
-  private isBrowser(): boolean {
-    return isPlatformBrowser(this.platformId);
-  }
-
   register(data: { username: string; email: string; password: string }): Observable<AuthResponse> {
     return this.http.post<AuthResponse>(`${this.apiUrl}/register/`, data);
   }
@@ -31,34 +27,28 @@ export class AuthService {
   }
 
   logout(): Observable<any> {
-    const refresh = this.isBrowser() ? sessionStorage.getItem('refresh') : null;
+    const refresh = typeof window !== 'undefined' ? sessionStorage.getItem('refresh') : null;
     return this.http.post(`${this.apiUrl}/logout/`, { refresh });
   }
 
   saveTokens(access: string, refresh: string): void {
-    if (!this.isBrowser()) return;
-    sessionStorage.setItem('access', access);
-    sessionStorage.setItem('refresh', refresh);
+    if (typeof window !== 'undefined') {
+      sessionStorage.setItem('access', access);
+      sessionStorage.setItem('refresh', refresh);
+    }
   }
 
   clearTokens(): void {
-    if (!this.isBrowser()) return;
-    sessionStorage.removeItem('access');
-    sessionStorage.removeItem('refresh');
-  }
-
-  getAccessToken(): string | null {
-    if (!this.isBrowser()) return null;
-    return sessionStorage.getItem('access');
-  }
-
-  getRefreshToken(): string | null {
-    if (!this.isBrowser()) return null;
-    return sessionStorage.getItem('refresh');
+    if (typeof window !== 'undefined') {
+      sessionStorage.removeItem('access');
+      sessionStorage.removeItem('refresh');
+    }
   }
 
   isAuthenticated(): boolean {
-    if (!this.isBrowser()) return false;
-    return !!sessionStorage.getItem('access');
+    if (typeof window !== 'undefined') {
+      return !!sessionStorage.getItem('access');
+    }
+    return false;
   }
 }

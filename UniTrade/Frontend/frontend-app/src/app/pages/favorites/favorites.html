@@ -1,47 +1,42 @@
 <div class="favorites-page">
   <div class="page-header">
     <div class="page-header-card">
-      <div class="header-badge">Saved marketplace items</div>
-      <h1>Favorites</h1>
-      <p>Keep track of listings you liked and come back to them anytime.</p>
+      <div class="header-badge">{{ langService.t('savedMarketplaceItems') }}</div>
+      <h1>{{ langService.t('favorites') }}</h1>
+      <p>{{ langService.t('favoritesSubtitle') }}</p>
     </div>
   </div>
 
   <div class="page-container">
-    <div *ngIf="errorMessage" class="message-box error-box">
-      {{ errorMessage }}
-    </div>
-
-    <div *ngIf="isLoading" class="message-box loading-box">
-      Loading favorites...
-    </div>
+    <div *ngIf="errorMessage" class="message-box error-box">{{ errorMessage }}</div>
+    <div *ngIf="isLoading" class="message-box loading-box">{{ langService.t('loadingFavorites') }}</div>
 
     <div *ngIf="!isLoading && favorites.length === 0" class="empty-state">
-      <h3>No favorites yet</h3>
-      <p>Save listings you like so you can find them later.</p>
-      <a routerLink="/listings" class="empty-btn">Browse Listings</a>
+      <h3>{{ langService.t('noFavoritesYet') }}</h3>
+      <p>{{ langService.t('saveListingsLater') }}</p>
+      <a routerLink="/listings" class="empty-btn">{{ langService.t('browseListings') }}</a>
     </div>
 
     <div *ngIf="!isLoading && favorites.length > 0" class="favorites-grid">
       <div *ngFor="let favorite of favorites" class="favorite-card">
-        <div class="image-wrapper">
-          <img [src]="getImageUrl(favorite)" [alt]="favorite.listing.title" />
-          <span class="status-badge">{{ favorite.listing.status }}</span>
-        </div>
-
-        <div class="card-body">
-          <h3>{{ favorite.listing.title }}</h3>
-          <p class="price">{{ favorite.listing.price }} ₸</p>
-          <p class="category">{{ favorite.listing.category.name }}</p>
-          <p class="location">{{ favorite.listing.location || 'Campus location not specified' }}</p>
-
-          <div class="card-actions">
-            <a [routerLink]="['/listings', favorite.listing.id]" class="view-btn">View</a>
-            <button class="remove-btn" (click)="removeFavorite(favorite.listing.id)">
-              Remove
-            </button>
+        <ng-container *ngIf="favorite?.listing as item">
+          <div class="image-wrapper">
+            <img [src]="getImageUrl(favorite)" [alt]="item.title || 'Listing image'" />
+            <span class="status-badge">{{ item.status }}</span>
           </div>
-        </div>
+
+          <div class="card-body">
+            <h3>{{ item.title }}</h3>
+            <p class="price">{{ item.price }} ₸</p>
+            <p class="category">{{ item.category?.name || '-' }}</p>
+            <p class="location">{{ item.location || langService.t('campusLocationNotSpecified') }}</p>
+
+            <div class="card-actions">
+              <a [routerLink]="['/listings', item.id]" class="view-btn">{{ langService.t('view') }}</a>
+              <button class="remove-btn" (click)="removeFavorite(item.id)">{{ langService.t('remove') }}</button>
+            </div>
+          </div>
+        </ng-container>
       </div>
     </div>
   </div>

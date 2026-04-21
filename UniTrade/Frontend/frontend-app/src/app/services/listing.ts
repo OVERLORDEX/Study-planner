@@ -1,9 +1,8 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Listing } from '../models/listing';
 import { Category } from '../models/category';
-import { Favorite } from '../models/favorite';
 import { Profile } from '../models/profile';
 
 @Injectable({
@@ -18,23 +17,14 @@ export class ListingService {
     return this.http.get<Category[]>(`${this.apiUrl}/categories/`);
   }
 
-  getListings(category?: string, search?: string, ordering?: string): Observable<Listing[]> {
-    let url = `${this.apiUrl}/listings/`;
-    const params: string[] = [];
+  getListings(category = '', search = '', ordering = ''): Observable<Listing[]> {
+    let params = new HttpParams();
 
-    if (category) params.push(`category=${category}`);
-    if (search) params.push(`search=${search}`);
-    if (ordering) params.push(`ordering=${ordering}`);
+    if (category) params = params.set('category', category);
+    if (search) params = params.set('search', search);
+    if (ordering) params = params.set('ordering', ordering);
 
-    if (params.length > 0) {
-      url += `?${params.join('&')}`;
-    }
-
-    return this.http.get<Listing[]>(url);
-  }
-
-  rateListing(listingId: number, score: number) {
-    return this.http.post(`${this.apiUrl}/listings/${listingId}/rate/`, { score });
+    return this.http.get<Listing[]>(`${this.apiUrl}/listings/`, { params });
   }
 
   getListingById(id: number): Observable<Listing> {
@@ -42,43 +32,33 @@ export class ListingService {
   }
 
   createListing(data: FormData): Observable<Listing> {
-    return this.http.post<Listing>(`${this.apiUrl}/listings/`, data);
+    return this.http.post<Listing>(`${this.apiUrl}/listings/create/`, data);
   }
 
   updateListing(id: number, data: FormData): Observable<Listing> {
-    return this.http.put<Listing>(`${this.apiUrl}/listings/${id}/`, data);
+    return this.http.patch<Listing>(`${this.apiUrl}/listings/${id}/edit/`, data);
   }
 
   deleteListing(id: number): Observable<any> {
-    return this.http.delete(`${this.apiUrl}/listings/${id}/`);
+    return this.http.delete(`${this.apiUrl}/listings/${id}/delete/`);
   }
 
   getMyListings(): Observable<Listing[]> {
     return this.http.get<Listing[]>(`${this.apiUrl}/my-listings/`);
   }
 
-  getFavorites(): Observable<Favorite[]> {
-    return this.http.get<Favorite[]>(`${this.apiUrl}/favorites/`);
+  getFavorites(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.apiUrl}/favorites/`);
   }
 
-  addToFavorites(listing_id: number): Observable<any> {
-    return this.http.post(`${this.apiUrl}/favorites/`, { listing_id });
+  addToFavorites(listingId: number): Observable<any> {
+    return this.http.post(`${this.apiUrl}/favorites/add/`, { listing_id: listingId });
   }
 
-  removeFromFavorites(listing_id: number): Observable<any> {
-    return this.http.delete(`${this.apiUrl}/favorites/${listing_id}/`);
-  }
-
-  getProfile(): Observable<Profile> {
-    return this.http.get<Profile>(`${this.apiUrl}/profile/`);
-  }
-
-  updateProfile(data: any): Observable<Profile> {
-    return this.http.put<Profile>(`${this.apiUrl}/profile/`, data);
-  }
-
-  changePassword(data: { old_password: string; new_password: string }) {
-  return this.http.post(`${this.apiUrl}/change-password/`, data);
+  removeFromFavorites(listingId: number): Observable<any> {
+    return this.http.request('delete', `${this.apiUrl}/favorites/remove/`, {
+      body: { listing_id: listingId }
+    });
   }
 
   getComments(listingId: number): Observable<any[]> {
@@ -86,6 +66,21 @@ export class ListingService {
   }
 
   addComment(listingId: number, text: string): Observable<any> {
-    return this.http.post(`${this.apiUrl}/listings/${listingId}/comments/`, { text });
+    return this.http.post(`${this.apiUrl}/listings/${listingId}/comments/add/`, { text });
+  }
+
+  rateListing(listingId: number, score: number): Observable<any> {
+    return this.http.post(`${this.apiUrl}/ratings/add/`, {
+      listing_id: listingId,
+      score
+    });
+  }
+
+  getProfile(): Observable<Profile> {
+    return this.http.get<Profile>(`${this.apiUrl}/profile/me/`);
+  }
+
+  updateProfile(data: any): Observable<Profile> {
+    return this.http.patch<Profile>(`${this.apiUrl}/profile/me/`, data);
   }
 }

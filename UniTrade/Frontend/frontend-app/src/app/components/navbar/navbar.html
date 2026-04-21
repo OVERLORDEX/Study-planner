@@ -1,27 +1,60 @@
 <nav class="navbar">
   <div class="navbar-container">
-    <a routerLink="/" class="logo">
+    <a routerLink="/" class="logo" (click)="closeDropdown()">
       <span class="logo-badge">U</span>
       <span class="logo-text">UniTrade</span>
     </a>
 
     <div class="nav-center">
-      <a routerLink="/listings" routerLinkActive="active-link">Listings</a>
-      <a routerLink="/favorites" routerLinkActive="active-link">Favorites</a>
+      <a routerLink="/listings" (click)="closeDropdown()">
+        {{ langService.t('listings') }}
+      </a>
 
       @if (authService.isAuthenticated()) {
-        <a routerLink="/create-listing" routerLinkActive="active-link">Create Listing</a>
-        <a routerLink="/my-listings" routerLinkActive="active-link">My Listings</a>
+        <a routerLink="/create-listing" (click)="closeDropdown()">
+          {{ langService.t('createListing') }}
+        </a>
       }
     </div>
 
     <div class="nav-right">
+      <div class="lang-switcher">
+        <button type="button" (click)="setLanguage('eng')">ENG</button>
+        <button type="button" (click)="setLanguage('rus')">RUS</button>
+        <button type="button" (click)="setLanguage('kaz')">KAZ</button>
+      </div>
+
       @if (authService.isAuthenticated()) {
-        <a routerLink="/profile" class="profile-link">Profile</a>
-        <button class="logout-btn" (click)="logout()">Logout</button>
+        <div class="dropdown-container">
+          <button type="button" class="dropdown-trigger" (click)="toggleDropdown()">
+            {{ langService.t('profile') }} ▼
+          </button>
+
+          @if (dropdownOpen) {
+            <div class="dropdown-menu">
+              <a routerLink="/my-listings" (click)="closeDropdown()" class="dropdown-item">
+                {{ langService.t('myListings') }}
+              </a>
+
+              <a routerLink="/favorites" (click)="closeDropdown()" class="dropdown-item">
+                {{ langService.t('favorites') }}
+              </a>
+
+              <a routerLink="/profile" (click)="closeDropdown()" class="dropdown-item">
+                {{ langService.t('settings') }}
+              </a>
+
+              <div class="dropdown-divider"></div>
+
+              <button type="button" class="dropdown-item dropdown-logout" (click)="logout()">
+                {{ langService.t('logout') }}
+              </button>
+            </div>
+          }
+        </div>
       } @else {
-        <a routerLink="/login" class="login-link">Login</a>
-        <a routerLink="/register" class="register-link">Register</a>
+        <a routerLink="/login" class="login-link">{{ langService.t('login') }}</a>
+        <a routerLink="/register" class="register-link">{{ langService.t('register') }}</a>
       }
     </div>
   </div>

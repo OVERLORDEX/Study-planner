@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { ListingService } from '../../services/listing';
 import { Category } from '../../models/category';
+import { LanguageService } from '../../services/language';
 
 @Component({
   selector: 'app-create-listing',
@@ -18,7 +19,7 @@ export class CreateListingComponent implements OnInit {
   price: number | null = null;
   condition = 'used';
   status = 'available';
-  category_id = '';
+  category_id: any = '';
   location = '';
 
   selectedImage: File | null = null;
@@ -42,7 +43,8 @@ export class CreateListingComponent implements OnInit {
 
   constructor(
     private listingService: ListingService,
-    private router: Router
+    private router: Router,
+    public langService: LanguageService
   ) {}
 
   ngOnInit(): void {
@@ -56,7 +58,7 @@ export class CreateListingComponent implements OnInit {
         this.categories = data || [];
       },
       error: () => {
-        this.errorMessage = 'Failed to load categories';
+        this.errorMessage = this.langService.t('failedToLoadCategories');
       }
     });
   }
@@ -93,9 +95,9 @@ export class CreateListingComponent implements OnInit {
 
   validateTitle(): void {
     if (!this.title.trim()) {
-      this.titleError = 'Title is required';
+      this.titleError = this.langService.t('titleRequired');
     } else if (this.title.trim().length < 3) {
-      this.titleError = 'Title must be at least 3 characters';
+      this.titleError = this.langService.t('titleMinLength');
     } else {
       this.titleError = '';
     }
@@ -103,9 +105,9 @@ export class CreateListingComponent implements OnInit {
 
   validateDescription(): void {
     if (!this.description.trim()) {
-      this.descriptionError = 'Description is required';
+      this.descriptionError = this.langService.t('descriptionRequired');
     } else if (this.description.trim().length < 10) {
-      this.descriptionError = 'Description must be at least 10 characters';
+      this.descriptionError = this.langService.t('descriptionMinLength');
     } else {
       this.descriptionError = '';
     }
@@ -113,9 +115,9 @@ export class CreateListingComponent implements OnInit {
 
   validatePrice(): void {
     if (this.price === null || this.price === undefined) {
-      this.priceError = 'Price is required';
+      this.priceError = this.langService.t('priceRequired');
     } else if (this.price <= 0) {
-      this.priceError = 'Price must be greater than 0';
+      this.priceError = this.langService.t('priceGreaterThanZero');
     } else {
       this.priceError = '';
     }
@@ -123,7 +125,7 @@ export class CreateListingComponent implements OnInit {
 
   validateCategory(): void {
     if (!this.category_id) {
-      this.categoryError = 'Category is required';
+      this.categoryError = this.langService.t('categoryRequired');
     } else {
       this.categoryError = '';
     }
@@ -162,7 +164,7 @@ export class CreateListingComponent implements OnInit {
       },
       error: (error) => {
         console.log('PROFILE UPDATE ERROR:', error);
-        this.errorMessage = 'Failed to save contact information';
+        this.errorMessage = this.langService.t('failedToSaveContactInformation');
         this.isLoading = false;
       }
     });
@@ -194,7 +196,7 @@ export class CreateListingComponent implements OnInit {
         if (error.error?.error) {
           this.errorMessage = error.error.error;
         } else {
-          this.errorMessage = 'Failed to create listing';
+          this.errorMessage = this.langService.t('failedToCreateListing');
         }
       }
     });
